@@ -5,7 +5,7 @@ int lectura = 0;
 int low =8;
 int medium = 9;
 int high = 10;
-int bomba_agua = 2;
+int bomba_agua = 3;
 
 
 SoftwareSerial miBT(11, 12); //Instancia la conexion al bluetooth - PIN 10 a TX y PIN 11 a RX
@@ -15,6 +15,9 @@ char BPS        = '4'; //1=1200, 2=2400, 3=4800, 4=9600, 5=19200, 6=38400, 7=576
 char PASSWORD[5]   = "4444"; //PIN O CLAVE DE 4 CARACTERES     
 
 void setup(){
+  // bomba apagada
+  
+
    Serial.begin(9600); 
   /* ESTABLECER CONFIGURACIÓN BLUETOOTH*/
   miBT.begin(9600); //Inicia la comunicacion en el modulo HC-06
@@ -53,11 +56,14 @@ void setup(){
    pinMode(low,OUTPUT);
    pinMode(medium,OUTPUT);
    pinMode(high,OUTPUT);
-   pinMode(bomba_agua,OUTPUT);
+   
   //INICIAMOS APAGADO
    digitalWrite(low,LOW);
   digitalWrite(medium,LOW);
   digitalWrite(high,LOW);
+  pinMode(bomba_agua,OUTPUT);
+  digitalWrite(bomba_agua,LOW);
+  
 }
 
 void loop(){
@@ -65,20 +71,24 @@ void loop(){
   p_humedad = map(lectura,950,0,0,100);
   p_humedad = constrain(p_humedad,0,100);
 
+
   if(p_humedad >=0 && p_humedad <=30){
   	digitalWrite(low,HIGH);
     digitalWrite(medium,LOW);
   digitalWrite(high,LOW);
+  digitalWrite(bomba_agua,HIGH);
   }
   else if(p_humedad >30 && p_humedad <=60){
     digitalWrite(medium,HIGH);
     digitalWrite(low,LOW);
   digitalWrite(high,LOW);
+  digitalWrite(bomba_agua,LOW);
   }
   else if(p_humedad >60){
     digitalWrite(high,HIGH);
     digitalWrite(medium,LOW);
   digitalWrite(low,LOW);
+  digitalWrite(bomba_agua,LOW);
   }
 
   miBT.print("  ");
@@ -86,5 +96,5 @@ void loop(){
   
   Serial.println(p_humedad);  // Imprime la lectura analógica directamente
   
-  delay(1000);  // Añade un pequeño retardo para facilitar la visualización de los valores
+  delay(900);  // Añade un pequeño retardo para facilitar la visualización de los valores
 }

@@ -5,6 +5,7 @@ int lectura = 0;
 int low =8;
 int medium = 9;
 int high = 10;
+int bomba_agua = 2;
 
 
 SoftwareSerial miBT(11, 12); //Instancia la conexion al bluetooth - PIN 10 a TX y PIN 11 a RX
@@ -52,6 +53,7 @@ void setup(){
    pinMode(low,OUTPUT);
    pinMode(medium,OUTPUT);
    pinMode(high,OUTPUT);
+   pinMode(bomba_agua,OUTPUT);
   //INICIAMOS APAGADO
    digitalWrite(low,LOW);
   digitalWrite(medium,LOW);
